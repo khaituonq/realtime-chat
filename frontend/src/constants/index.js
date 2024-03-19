@@ -1,0 +1,1 @@
+export const avatarsName = ["Daisy", "Snowball", "Bandit", "Boots", "Fluffy", "Loki"]
