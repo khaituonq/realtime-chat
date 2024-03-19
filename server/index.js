@@ -3,12 +3,36 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { Server } from "socket.io";
 
-import "./config/mongo.js";
+// import "./config/mongo.js";
 
 import { VerifyToken, VerifySocketToken } from "./middlewares/VerifyToken.js";
 import chatRoomRoutes from "./routes/chatRoom.js";
 import chatMessageRoutes from "./routes/chatMessage.js";
 import userRoutes from "./routes/user.js";
+import mongoose from "mongoose";
+dotenv.config();
+
+const MONGO_URI = process.env.MONGO_URI;
+
+mongoose.connect(MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+mongoose.connection.on("connected", () => {
+  console.log("Mongo has connected succesfully");
+});
+mongoose.connection.on("reconnected", () => {
+  console.log("Mongo has reconnected");
+});
+mongoose.connection.on("error", (error) => {
+  console.log("Mongo connection has an error", error);
+  mongoose.disconnect();
+});
+mongoose.connection.on("disconnected", () => {
+  console.log("Mongo connection is disconnected");
+});
+
 
 const app = express();
 
